@@ -1,0 +1,16 @@
+{
+  "entries": [
+    {
+      "id": "example-birthday",
+      "label": "Example person's birthday",
+      "aliases": ["the person's birthday", "birthday phrase from letter"],
+      "month_day": "01-31"
+    },
+    {
+      "id": "example-one-off-event",
+      "label": "Example one-off event",
+      "aliases": ["exact event phrase from letter"],
+      "date": "2000-01-31"
+    }
+  ]
+}

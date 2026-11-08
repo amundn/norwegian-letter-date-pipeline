@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "norwegian-letter-date-pipeline"
+version = "0.3.1"
+description = "Local model-assisted date and event extraction from Norwegian letters"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["jsonschema>=4.18"]
+
+[project.scripts]
+letter-pipeline = "letter_pipeline.session_pipeline:main"
+letter-pipeline-prototype = "letter_pipeline.prototype:main"
+letter-pipeline-catalog = "letter_pipeline.catalog:main"
+
+[tool.setuptools]
+packages = ["letter_pipeline"]
+package-dir = {"letter_pipeline" = "."}
