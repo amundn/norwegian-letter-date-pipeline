@@ -20,7 +20,11 @@ from .session_pipeline import (Runner, calendar_rows, canonical, digest, event_w
     source_quotes, validate_scan, write_json, WEEKDAYS)
 
 
-VERSION = "prototype-0.2.11"
+VERSION = "prototype-0.2.12"
+# A paraphrased time expression remains a review warning, but should not by
+# itself suppress a date hypothesis when exact source quotes and the audit
+# support the date. The quote check still records the mismatch for reviewers.
+NON_BLOCKING_DATE_CHECKS = {"Tidsuttrykket finnes ikke ordrett i datolinjene."}
 HOLIDAY_LABELS = {
     "easter-49": "fastelavnssøndag", "easter-48": "fastelavnsmandag", "easter-7": "palmesøndag",
     "easter-4": "påskeonsdag",
@@ -1080,7 +1084,10 @@ def process_letter(runner, path, input_dir, output_dir, compare_path=None):
                             if (event.get("family_date_match", {}).get("date") == effective_date and
                                 event["family_date_match"].get("line_ids")):
                                 independent = True
-                        if (effective_date and len(event["date_candidates"]) == 1 and not event["python_checks"] and
+                        blocking_date_checks = set(event["python_checks"]) - NON_BLOCKING_DATE_CHECKS
+                        has_verbatim_source = bool(event["date_quotes"] and event["date_line_ids"])
+                        if (effective_date and len(event["date_candidates"]) == 1 and
+                            not blocking_date_checks and has_verbatim_source and
                             event["audit"]["verdict"] == "supported" and (base["date"] or independent)):
                             event["date_basis"] = "hypothesis"
                             event["suggested_date"] = effective_date
